@@ -14,6 +14,7 @@ from linebot.models import (
 
 app = Flask(__name__)
 
+# 1段目...アクセストークン  2段目...シークレット
 line_bot_api = LineBotApi('6klfQcxRUR1/I9NgVTdZdCh/1tebjGfWypehUmAtTUoSE4MXo85NCrnotofkpWISBflBkEruAdtfw4ZFszxt/2IBBhBJ9mBqZeZqPuJZd0O6o7aq1inLyz8+xau1sbqCfkWLZwaHpECg8d4yziRJbQdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('2958c2d87a2e38e8d89ac90c8c9ec6ac')
 
@@ -50,7 +51,7 @@ def handle_message(event):
     
     # 勉強系--------------------------
     if event.message.text == "勉強開始"or event.message.text == "勉強" or event.message.text == "べんきょう":
-        # sttをglobal変数に
+        # sttをglobal変数に(これしないと勉強終了時に開始時間を持ってきて計算できない)
         global stt
         stt = time.gmtime()
         line_bot_api.reply_message(
@@ -75,17 +76,17 @@ def handle_message(event):
             TextSendMessage(text=f"[アナウンス]\n勉強お疲れ様です<(^~^)/\n終了時刻→" + str(ft.tm_hour + 9) + ":" + str(ft.tm_min).zfill(2) + "\n勉強時間は" + str(rm) + "分です！"))
 
     # 生活系-----------------------------------
-    if event.message.text == "検温" or event.message.text == "けんおん" or event.message.text == "井上":
+    if event.message.text == "検温" or event.message.text == "けんおん" or event.message.text == "井上" or event.message.text == "井上先生":
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=f"[ミッション]\n井上 第二形態の阻止！\n9:00になる前に検温を入力し、井上の第二形態化を食い止めよ。\nhttps://docs.google.com/forms/d/e/1FAIpQLScPXjH2eQytZEFAnENB2V7CyGhZMfLIbGzpilXbDXrUv1WdLA/viewform"))
     
-    if event.message.text == "おはよう" or event.message.text == "おはようございます" or event.message.text == "おは":
+    if event.message.text == "おはよう" or event.message.text == "おはようございます" or event.message.text == "おはよ":
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=f"おはようございます！\n今日も充実した1日をお過ごしください"))
 
-    # 当たるか当たらないか分からないクジ-----------
+    # 当たるか当たらないか分からないクジ 6000000～7000000だと出てきやすい-----------
     if event.message.text == "クックパッド" or event.message.text == "くっくぱっど":
         rand = random.randint(1, 9999999)
         line_bot_api.reply_message(
@@ -154,7 +155,7 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text=f"お味噌汁のレシピを5つご提案します♪\nhttps://cookpad.com/recipe/" + random.choice(list)))
 
-    # その他(オウム返し) "textは対応する単語ではありません。"でもいいかも
+    # その他 全てをcookpadとamazonの検索後のurlで返す
     else:
         guzai = event.message.text
         line_bot_api.reply_message(
