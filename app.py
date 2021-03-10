@@ -15,8 +15,8 @@ from linebot.models import (
 app = Flask(__name__)
 
 # 1段目...アクセストークン  2段目...シークレット
-line_bot_api = LineBotApi('6klfQcxRUR1/I9NgVTdZdCh/1tebjGfWypehUmAtTUoSE4MXo85NCrnotofkpWISBflBkEruAdtfw4ZFszxt/2IBBhBJ9mBqZeZqPuJZd0O6o7aq1inLyz8+xau1sbqCfkWLZwaHpECg8d4yziRJbQdB04t89/1O/w1cDnyilFU=')
-handler = WebhookHandler('2958c2d87a2e38e8d89ac90c8c9ec6ac')
+line_bot_api = LineBotApi('アクセス')
+handler = WebhookHandler('シークレット')
 
 @app.route("/")
 def test():
@@ -47,19 +47,19 @@ def handle_message(event):
     if event.message.text == "使い方" or event.message.text == "つかいかた" or event.message.text == "取説" or event.message.text == "とりせつ" or event.message.text == "トリセツ":
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=f"[App一覧]\nおはよう:あいさつを返してくれます\n勉強開始:勉強の開始時間とカウントをスタートします\n勉強終了:勉強開始からの時間を表示します\n"))
+            TextSendMessage(text=f"[App一覧]\nおはよう:あいさつを返してくれます\n料理開始:料理の開始時間とカウントをスタートします\n料理終了:料理開始からの時間を表示します\n"))
     
     # 勉強系--------------------------
-    if event.message.text == "勉強開始"or event.message.text == "勉強" or event.message.text == "べんきょう":
+    if event.message.text == "勉強開始"or event.message.text == "料理" or event.message.text == "りょうり":
         # sttをglobal変数に(これしないと勉強終了時に開始時間を持ってきて計算できない)
         global stt
         stt = time.gmtime()
         line_bot_api.reply_message(
             event.reply_token,
             # .zfill(2)は、str型メソッド strで文字列にして変換
-            TextSendMessage(text=f"[アナウンス]\n勉強を開始しました。\n開始時刻→" + str(stt.tm_hour + 9) + ":" + str(stt.tm_min).zfill(2) + "\n集中して取り組みましょう！"))
+            TextSendMessage(text=f"[アナウンス]\n料理を開始しました。\n開始時刻→" + str(stt.tm_hour + 9) + ":" + str(stt.tm_min).zfill(2) + "\nレッツ、クッキング！"))
         
-    if event.message.text == "勉強終了" or event.message.text == "終了" or event.message.text == "しゅうりょう":
+    if event.message.text == "料理終了" or event.message.text == "終了" or event.message.text == "しゅうりょう":
         # ft→終了時間(finish time)
         ft = time.gmtime()
 
@@ -73,7 +73,7 @@ def handle_message(event):
 
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=f"[アナウンス]\n勉強お疲れ様です<(^~^)/\n終了時刻→" + str(ft.tm_hour + 9) + ":" + str(ft.tm_min).zfill(2) + "\n勉強時間は" + str(rm) + "分です！"))
+            TextSendMessage(text=f"[アナウンス]\n料理お疲れ様です<(^~^)/\n終了時刻→" + str(ft.tm_hour + 9) + ":" + str(ft.tm_min).zfill(2) + "\n勉強時間は" + str(rm) + "分です！"))
 
     # 生活系-----------------------------------
     if event.message.text == "検温" or event.message.text == "けんおん" or event.message.text == "井上" or event.message.text == "井上先生":
@@ -155,12 +155,12 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text=f"お味噌汁のレシピを5つご提案します♪\nhttps://cookpad.com/recipe/" + random.choice(list)))
 
-    # その他 全てをcookpadとamazonの検索後のurlで返す
+    # その他 全てをcookpadの検索後のurlで返す
     else:
         guzai = event.message.text
         line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=f"[提案]\n" + guzai + "に関連する料理です↓\nhttps://cookpad.com/search/" + guzai + "\n\namazonはこちら↓\nhttps://www.amazon.co.jp/s?k=%E3%83%91%E3%83%B3%E3%83%80&__mk_ja_JP=" + guzai + "&ref=nb_sb_noss_1"))
+        TextSendMessage(text=f"[提案]\n" + guzai + "に関連する料理です↓\nhttps://cookpad.com/search/" + guzai))
 
 if __name__ == "__main__":
     app.run()
