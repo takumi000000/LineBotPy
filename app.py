@@ -49,9 +49,9 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text=f"[App一覧]\nおはよう:あいさつを返してくれます\n料理開始:料理の開始時間とカウントをスタートします\n料理終了:料理開始からの時間を表示します\n"))
     
-    # 勉強系--------------------------
-    if event.message.text == "勉強開始"or event.message.text == "料理" or event.message.text == "りょうり":
-        # sttをglobal変数に(これしないと勉強終了時に開始時間を持ってきて計算できない)
+    # 料理時間--------------------------
+    if event.message.text == "料理開始"or event.message.text == "料理" or event.message.text == "りょうり":
+        # sttをglobal変数に(これしないと料理終了時に開始時間を持ってきて計算できない)
         global stt
         stt = time.gmtime()
         line_bot_api.reply_message(
@@ -66,14 +66,14 @@ def handle_message(event):
         stru = stt.tm_hour
         strf = ft.tm_hour
 
-        # rh→勉強時間(result hour)
+        # rh→料理時間(result hour)
         rh = strf - stru
-        # rh→勉強時間(result min)
+        # rh→料理時間(result min)
         rm = (ft.tm_min - stt.tm_min) + (rh * 60)
 
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=f"[アナウンス]\n料理お疲れ様です<(^~^)/\n終了時刻→" + str(ft.tm_hour + 9) + ":" + str(ft.tm_min).zfill(2) + "\n勉強時間は" + str(rm) + "分です！"))
+            TextSendMessage(text=f"[アナウンス]\n料理お疲れ様です<(^~^)/\n終了時刻→" + str(ft.tm_hour + 9) + ":" + str(ft.tm_min).zfill(2) + "\nかかった時間は" + str(rm) + "分です！"))
 
     # 生活系-----------------------------------
     if event.message.text == "検温" or event.message.text == "けんおん" or event.message.text == "井上" or event.message.text == "井上先生":
