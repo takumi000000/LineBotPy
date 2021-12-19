@@ -79,7 +79,7 @@ def handle_message(event):
     if event.message.text == "検温" or event.message.text == "けんおん" or event.message.text == "井上" or event.message.text == "井上先生":
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=f"[ミッション]\n井上 第二形態の阻止！\n9:00になる前に検温を入力し、井上の第二形態化を食い止めよ。\nhttps://docs.google.com/forms/d/e/1FAIpQLScPXjH2eQytZEFAnENB2V7CyGhZMfLIbGzpilXbDXrUv1WdLA/viewform"))
+            TextSendMessage(text=f"[ミッション]\n井上 第二形態の阻止！\n9:00になる前に検温を入力し、井上の第二形態化を食い止めよ。"))
     
     if event.message.text == "おはよう" or event.message.text == "おはようございます" or event.message.text == "おはよ":
         line_bot_api.reply_message(
